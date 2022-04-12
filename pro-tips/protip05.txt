@@ -1,0 +1,3 @@
+change docker images folder to external drive
+
+https://forums.docker.com/t/how-do-i-change-the-docker-image-installation-directory/1169

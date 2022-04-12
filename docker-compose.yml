@@ -1,4 +1,26 @@
 # store data into external drive
 # link: https://stackoverflow.com/questions/63657735/store-docker-volume-on-external-hard-drive
 
+version: '3.9' # optional since v1.27.0
+services:
+  db:
+    restart: always
+    # build: . # define dockerfile?
+    image: mongo:4.2.8
+    ports:
+      - 8080:8080
+      - 40487:40487
+    environment:
+      - name=value
+    volumes:
+      - ./data:/media/choppy/WD_BLACK/projects/don-choppy/thesis-msc-2022
+    command: "echo funcionolawea && mongod --auth"
 
+# volumes:
+#   # title of project
+#   - difm-db:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       device: /media/choppy/WD_BLACK/projects/don-choppy/thesis-msc-2022
+#       o: bind
