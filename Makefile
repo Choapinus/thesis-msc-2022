@@ -3,6 +3,7 @@ run:
 
 clean:
 	rm -rf *.pyc
+	rm -rf __pycache__
 
 setup:
 	# define a setup, use conda, env.yml and then create a setup.py.
