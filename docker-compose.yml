@@ -8,13 +8,12 @@ services:
     # build: . # define dockerfile?
     image: mongo:4.2.8
     ports:
-      - 8080:8080
       - 40487:40487
     environment:
       - name=value
     volumes:
       - ./data:/media/choppy/WD_BLACK/projects/don-choppy/thesis-msc-2022
-    command: "echo funcionolawea && mongod --auth"
+    command: "echo funcionolawea && mongod --auth && mongod --port 40487" # check auth and exec port
 
 # volumes:
 #   # title of project

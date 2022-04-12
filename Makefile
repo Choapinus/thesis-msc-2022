@@ -1,9 +1,11 @@
 run:
-	python main.py
+	# python main.py
+	docker-compose up
 
 clean:
 	rm -rf *.pyc
 	rm -rf __pycache__
+	docker-compose down
 
 setup:
 	# define a setup, use conda, env.yml and then create a setup.py.
