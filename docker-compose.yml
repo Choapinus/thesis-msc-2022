@@ -1,6 +1,8 @@
 # store data into external drive
 # link: https://stackoverflow.com/questions/63657735/store-docker-volume-on-external-hard-drive
 
+# example with django + postgresql
+
 version: '3.9' # optional since v1.27.0
 services:
   db:
@@ -12,14 +14,6 @@ services:
     environment:
       - name=value
     volumes:
+      # check persistence
       - ./data:/media/choppy/WD_BLACK/projects/don-choppy/thesis-msc-2022
     command: "echo funcionolawea && mongod --auth && mongod --port 40487" # check auth and exec port
-
-# volumes:
-#   # title of project
-#   - difm-db:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       device: /media/choppy/WD_BLACK/projects/don-choppy/thesis-msc-2022
-#       o: bind
