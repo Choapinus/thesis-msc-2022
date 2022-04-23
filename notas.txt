@@ -1,0 +1,53 @@
+presentacion de una plana
+
+titulo
+obj
+hipotesis
+
+
+podrias morphear-manipular el rostro-selfie para que existan 2-3-4 caras y que pasen todas con un solo carnet
+contexto: selfie con carnet de identidad
+
+base de datos: ???
+- hay que crear los morphings
+
+- generar imagenes de morphing con GANS
+- tomar imagenes de selfies y con estas generar imagenes sinteticas
+
+
+morph que da mejor resultado:
+- limitar a 2 rostros (cuando tengas todo hecho, probar con mas pero primero tener una linea base de 2)
+
+
+
+haras face manipulation para generar un carnet magico a traves de las selfies
+- las selfies las generaras con los usuarios que se parezcan O generarlas sinteticamente con GANs
+- lo que hacen actualmente es tomar un reconocedor de rostro (arcface iex), buscan a las personas con menor distancia y luego las morphean
+- 
+
+
+* hacer diagrama de flujo
+* darle una vuelta a diferential morphing
+
+
+*** hacer resumen de los papers que te mando el profe *** 
+*** tratar de engañar al liveness para poder reforzarlo de alguna manera ***
+** verificar influencia de maquillaje en reconocimiento facial ** 
+
+
+
+
+
+
+
+new ideas:
+
+selfie periocular iris recognition
+reconocimiento de iris a partir de la selfie
+
+verificacion de identidad con iris considerando cualquier escenario (celular, foto de selfie, etc)
+
+sistema de verificacion de identidad hibrido que acepte RGB e infrarrojo (pasar de RGB a infrarrojo?) pero en un solo flujo
+
+
+*** resumir papers y constatar ideas con objetivos y en que escenarios se estan aplicando ***
