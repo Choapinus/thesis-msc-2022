@@ -1,0 +1,1 @@
+{"region":{"Eye":{"type":"radio","description":"","options":{"pupil":"","iris":"","sclera_left":"","sclera_right":"","eyelid":"","makeup":"","eye_left":"","eye_right":""},"default_options":{"pupil":true}}},"file":{"Eye":{"type":"text"},"ers":{"type":"text"}}}
