@@ -1,7 +1,12 @@
+****** hacer detector de ojos con densenet10
+
+# Doing
 base de datos: selfie-TOC
 - hay que crear los ataques de suplantacion manuales
 - generar imagenes de suplantacion con GANS: https://paperswithcode.com/paper/styleswin-transformer-based-gan-for-high-1#code
 - tomar imagenes de selfies y con estas generar imagenes perioculares izq y der: https://github.com/WongKinYiu/yolov7
 
+
+# TODO
 * hacer detector periocular rgb con yolo: https://github.com/WongKinYiu/yolov7
 * NTNU db description: https://www.sciencedirect.com/science/article/pii/S0262885620301116
