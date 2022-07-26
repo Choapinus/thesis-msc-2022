@@ -8,5 +8,6 @@ base de datos: selfie-TOC
 
 
 # TODO
+* datagenerator
 * hacer detector periocular rgb con yolo: https://github.com/WongKinYiu/yolov7
 * NTNU db description: https://www.sciencedirect.com/science/article/pii/S0262885620301116
