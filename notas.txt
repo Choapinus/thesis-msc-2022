@@ -4,11 +4,22 @@
 - tomar imagenes de selfies y con estas generar imagenes perioculares izq y der: https://github.com/WongKinYiu/yolov7
 
 
+
+
+
 # TODO
+* eye detector model
+    - improve accuracy
+    - implement AP, mAP, IoU and DiceCoef as evaluation metrics
+    - do more experiments and save them
+
 * automarker
-    - decrypt model output
-    - make inference over new images
-    - make new via json format file and load it from VIA.html
+    - refactor code and make classes for 
+        - model
+        - data generator
+        - data augmentation
+        - inference with VIA
+    
 
 * make multi stage train
     - first train model with very difficult data for firsts (100) epochs
@@ -19,6 +30,13 @@
 * consultar por NTNU. DB description: https://www.sciencedirect.com/science/article/pii/S0262885620301116
 * generar imagenes de suplantacion con GANS: https://paperswithcode.com/paper/styleswin-transformer-based-gan-for-high-1#code
 
+
+
+
 # Done
 - datagenerator
 - dense eye detector # its a regressor haha
+- automarker
+    - decrypt model output
+    - make inference over new images
+    - make new via json format file and load it from VIA.html
