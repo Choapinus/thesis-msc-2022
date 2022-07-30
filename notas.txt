@@ -23,7 +23,8 @@
 
 * make multi stage train
     - first train model with very difficult data for firsts (100) epochs
-    - then change data augmentation to an "easier" one
+    - then freeze the "upper side" or the "down side" of the model
+    - and change data augmentation to an "easier" one
     
 
 * hacer detector periocular rgb con yolo: https://github.com/WongKinYiu/yolov7
