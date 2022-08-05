@@ -8,6 +8,13 @@
 
 
 # TODO
+* data
+    - download flickr data (1/2)
+    - download data from thispersondoesnotexist
+
+* datagenerator
+    - do bounding box augmentation translation with imgaug
+
 * eye detector model
     - improve accuracy
     - implement AP, mAP and DiceCoef as evaluation metrics
