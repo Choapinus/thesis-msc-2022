@@ -10,7 +10,7 @@
 # TODO
 * data
     - download flickr data (1/2)
-    - download data from thispersondoesnotexist
+    - download data from thispersondoesnotexist (generate function and an exec file with instructions)
 
 * datagenerator
     - do bounding box augmentation translation with imgaug
