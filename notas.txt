@@ -10,8 +10,8 @@
 # TODO
 * eye detector model
     - improve accuracy
-    - implement AP, mAP, IoU and DiceCoef as evaluation metrics
-    - do more experiments and save them
+    - implement AP, mAP and DiceCoef as evaluation metrics
+    - do more experiments and save them into a excel
 
 * automarker
     - refactor code and make classes for 
@@ -25,6 +25,9 @@
     - first train model with very difficult data for firsts (100) epochs
     - then freeze the "upper side" or the "down side" of the model
     - and change data augmentation to an "easier" one
+
+* make transfer learning from densenet10 model used to segmentation and train with rgb data
+* delete segmentation part?
     
 
 * hacer detector periocular rgb con yolo: https://github.com/WongKinYiu/yolov7
@@ -35,6 +38,10 @@
 
 
 # Done
+- eye detector model
+    - improve accuracy
+    - implement IoU metric
+
 - datagenerator
 - dense eye detector # its a regressor haha
 - automarker
