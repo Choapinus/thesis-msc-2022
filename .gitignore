@@ -1,6 +1,7 @@
 data/
 notebooks/ttv
 notebooks/synthetic
+notebooks/*.json
 tflow/keras-yolo3/logs/*
 tflow/keras-yolo3/model_data/*
 tflow/keras-yolo3/weights/*
