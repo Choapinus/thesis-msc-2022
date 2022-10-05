@@ -17,8 +17,11 @@ def load_image(path, colorspace='RGB'):
         print('Colorspace setted to RGB')
         color = 'rgb'
     
-    image = cv2.cvtColor(cv2.imread(path), spaces[color])
-    return image
+    image = cv2.imread(path)
+    
+    if image is None:
+        return None
+    else: return cv2.cvtColor(image, spaces[color])
 
 def align(img, data):
     # In case the image has more than 1 face, find the biggest face
