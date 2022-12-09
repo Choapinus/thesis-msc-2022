@@ -4,6 +4,7 @@ notebooks/synthetic
 notebooks/*.json
 notebooks/models
 notebooks/aikit
+notebooks/densenet121_models
 tflow/keras-yolo3/logs/*
 tflow/keras-yolo3/model_data/*
 tflow/keras-yolo3/weights/*
