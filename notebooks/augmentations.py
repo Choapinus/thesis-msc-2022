@@ -12,13 +12,26 @@ def avg_aug(mode="constant"):
     aug = iaa.SomeOf(
         (0, 4),
         [
+            iaa.Sometimes(0.33,
+                [
+                    iaa.SomeOf(
+                        (0, 2),
+                        [
+                            iaa.Fliplr(0.75),
+                            iaa.Flipud(0.75)
+                        ]
+                    )
+                ]
+            ),
             iaa.Sometimes(
                 0.25,
                 [
-                    iaa.CoarseDropout(p=(0.05, 0.25)),
+                    iaa.CoarseDropout(p=(0.05, 0.35)),
                 ],
             ),
             iaa.Add(value=(-30, 30)),
+            iaa.Grayscale(alpha=(0.0, 1.0)),
+            iaa.LinearContrast((0.25, 2.0), per_channel=0.5),
             iaa.SomeOf(
                 (0, 1),
                 [
