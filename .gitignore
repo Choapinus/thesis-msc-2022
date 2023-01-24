@@ -5,8 +5,12 @@ notebooks/*.json
 notebooks/models
 notebooks/aikit
 notebooks/densenet121_models
+notebooks/__pycache__
 tflow/keras-yolo3/logs/*
 tflow/keras-yolo3/model_data/*
 tflow/keras-yolo3/weights/*
 *.h5
 *.hdf5
+*.pyc
+notebooks/info
+.vscode
