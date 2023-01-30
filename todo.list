@@ -1,16 +1,9 @@
-# done 
-* tf data for classification
-    - by now only supports bonafide vs attack binary
-
 # TODO
 
-* tf data for classification
-* prepare and distribute data for experiments
 * add new env format file because env.yml conda type get some errors when installing into another computer
 
 * synthethic data
     - download data from thispersondoesnotexist (generate function and an exec file with instructions)
 
-* conditional class datagenerator    
 * consultar por NTNU. DB description: https://www.sciencedirect.com/science/article/pii/S0262885620301116
 * generar imagenes de suplantacion con GANS: https://paperswithcode.com/paper/styleswin-transformer-based-gan-for-high-1#code

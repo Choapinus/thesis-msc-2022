@@ -5,6 +5,8 @@ import warnings
 import numpy as np
 from tqdm import tqdm
 import tensorflow as tf
+from datetime import datetime
+from imutils.paths import list_files
 
 from sklearn.metrics import classification_report, confusion_matrix
 from utils import (
@@ -72,7 +74,7 @@ parser.add_argument(
     type=int,
     nargs=2,
     default=(224, 224),
-    help="Input shape must be two nums",
+    help="Input shape must be two int numbers",
 )
 parser.add_argument(
     "-l", "--learning_rate", type=float, default=1e-4, help="Learning rate of optimizer"
@@ -86,12 +88,20 @@ parser.add_argument(
     choices=["rmsprop", "sgd", "adam"],
 )
 parser.add_argument(
+    "-d",
+    "--dataset",
+    type=str,
+    default="flickr",
+    help="Train dataset",
+    choices=["flickr", "splunk"],
+)
+parser.add_argument(
     "-a",
     "--architecture",
     type=str,
     default="mnetv2",
     help="Architecture to be trained",
-    choices=["mnetv2", "mnetv3S", "mnetv3L"],
+    choices=["mnetv2", "mnetv3S", "mnetv3L", "effnet", "densenet"],
 )
 parser.add_argument(
     "-m",
@@ -128,6 +138,9 @@ multiclass = args.multiclass
 periocular = args.periocular
 arch = args.architecture  # mnetv2 | mnetv3S | mnetv3L | densenet | effnet
 optim_str = args.optimizer  # rmsprop / sgd / adam
+db_key = args.dataset
+exp_id = datetime.now().strftime('%Y%m%d_%H%M%S%f')
+os.makedirs(f'exps/{arch}_{exp_id}/models')
 
 _classes = ("attack", "bona fide") if not multiclass else ("bona fide", "printed", "screen")
 _bf_index = _classes.index("bona fide")
@@ -137,7 +150,6 @@ if periocular:
         "flickr": "../data/02_intermediate/flickr-periocular",
         "splunk": "../data/02_intermediate/splunk-periocular",
     }
-
 else:
     datasets = {
         "flickr": "../data/02_intermediate/flickr",
@@ -154,7 +166,7 @@ with tf.device(f"/gpu:{gpu_id}"):
     # Make dataset
     train_dataset, val_dataset, test_dataset, class_weights = load_dataset(
         db_dict=datasets,
-        db_key="flickr",
+        db_key=db_key,
         shape=shape,
         batch_size=batch_size,
         multiclass=multiclass,
@@ -221,15 +233,16 @@ with tf.device(f"/gpu:{gpu_id}"):
         )(x)
         model = Model(inputs=model.input, outputs=x)
 
+    mckpt_path = f'exps/{arch}_{exp_id}'
     callbacks = [
         ReduceLROnPlateau(
-            monitor="val_loss", factor=0.25, patience=15, min_lr=1e-15, verbose=True
+            monitor="val_loss", factor=0.1, patience=10, min_lr=1e-15, verbose=True
         ),
         EarlyStopping(monitor="val_loss", patience=30, verbose=1),
         ModelCheckpoint(
-            filepath="models/E{epoch:03d}-{val_loss:.4f}.hdf5",  # TODO: change filepath name
-            monitor="val_loss",
-            mode="min",
+            filepath=mckpt_path+"/models/E{epoch:03d}-{val_loss:.4f}.h5", 
+            monitor="val_loss", mode="min", 
+            save_best_only=True,
         ),
     ]
 
@@ -253,8 +266,10 @@ with tf.device(f"/gpu:{gpu_id}"):
     )
 
     with warnings.catch_warnings():
+        # catch some warnings of imgaug
         warnings.warn("deprecated", DeprecationWarning)
         warnings.simplefilter("ignore")
+        # training begins
         history = model.fit(
             train_dataset,
             callbacks=callbacks,
@@ -270,7 +285,10 @@ with tf.device(f"/gpu:{gpu_id}"):
     # call plot function
     plot_history(
         history, "Model Training Loss & Acc.", "train_plot.png", arcloss=arcloss
-    )  # TODO: change history plot name
+    )
+
+    # TODO: restore best weights
+    # models_dirs = [*list_files(f'exps/{exp_id}/models')]
 
     # # Eval Test set block
     y_true, y_pred, y_score = [], [], []
@@ -406,42 +424,50 @@ riapar_ = riapar(
     bonafide_threshold=threshold,
 )
 
-# save all this metrics into a readable
-metrics_and_info = {
-    "MODEL": arch,
-    "ARCLOSS": arcloss,
-    "CLASSES": _classes,
-    "LR": learning_rate,
-    "OPTIMIZER": optim_str,
-    "THRESHOLD": threshold,
-    "MULTICLASS": multiclass,
-    "PERIOCULAR": periocular,
-    "BONAFIDE": {"index": _bf_index, "classname": _classes[_bf_index]},
-    "EER": {"classid": max_eer_pais, "value": eer_pais_[max_eer_pais][0]},
-    "MAX EER PAIS": {"classid": max_eer_pais, "classname": _classes[max_eer_pais]},
-    "EER_THRESHOLD": {"classid": max_eer_pais, "value": eer_pais_[max_eer_pais][1]},
-    "MAX APCER PAIS": {
-        "classid": max_attack_pais,
-        "classname": _classes[max_attack_pais],
-    },
-    "ACER": acer_ * 100,
-    "APCER": {_classes[k]: apcer_[k] for k in apcer_.keys()},
-    "BPCER": bpcer_ * 100,
-    "RIAPAR": riapar_ * 100,
-    "BPCER10": {"value": bpcer10, "threshold": bpcer10thres},
-    "BPCER20": {"value": bpcer20, "threshold": bpcer20thres},
-    "BPCER50": {"value": bpcer50, "threshold": bpcer50thres},
-    "BPCER100": {"value": bpcer100, "threshold": bpcer100thres},
-    "BPCER200": {"value": bpcer200, "threshold": bpcer200thres},
-    "BPCER500": {"value": bpcer500, "threshold": bpcer500thres},
-    "BPCER1000": {"value": bpcer1000, "threshold": bpcer1000thres},
-    "BPCER10000": {"value": bpcer10000, "threshold": bpcer10000thres},
-}
+# store exp into a folder
+os.makedirs(f"exps/{arch}_{exp_id}/figs") # if this throws an error, metrics will not be saved
+# beware
 
-# TODO: change names of metrics file stored
-with open("metrics.json", "w", encoding="utf8") as json_file:
+with open(f"exps/{arch}_{exp_id}/iso301073.json", "w", encoding="utf8") as json_file:
+    # save all this metrics into a readable
+    metrics_and_info = {
+        "exp_id": exp_id,
+        "DATASET": db_key,
+        "MODEL": arch,
+        "INPUT_SIZE": shape,
+        "ARCLOSS": arcloss,
+        "CLASSES": _classes,
+        "LR": learning_rate,
+        "OPTIMIZER": optim_str,
+        "THRESHOLD": threshold,
+        "MULTICLASS": multiclass,
+        "PERIOCULAR": periocular,
+        "BONAFIDE": {"index": _bf_index, "classname": _classes[_bf_index]},
+        "HISTORY": history.history,
+        "EER": {"classid": max_eer_pais, "value": eer_pais_[max_eer_pais][0]},
+        "MAX EER PAIS": {"classid": max_eer_pais, "classname": _classes[max_eer_pais]},
+        "EER_THRESHOLD": {"classid": max_eer_pais, "value": eer_pais_[max_eer_pais][1]},
+        "MAX APCER PAIS": {
+            "classid": max_attack_pais,
+            "classname": _classes[max_attack_pais],
+        },
+        "ACER": acer_ * 100,
+        "BPCER": bpcer_ * 100,
+        "RIAPAR": riapar_ * 100,
+        # "APCER": {apcer_.get(max_eer_pais)},
+        "APCER": {_classes[k]: apcer_[k] for k in apcer_.keys()},
+        "BPCER10": {"value": bpcer10, "threshold": bpcer10thres},
+        "BPCER20": {"value": bpcer20, "threshold": bpcer20thres},
+        "BPCER50": {"value": bpcer50, "threshold": bpcer50thres},
+        "BPCER100": {"value": bpcer100, "threshold": bpcer100thres},
+        "BPCER200": {"value": bpcer200, "threshold": bpcer200thres},
+        "BPCER500": {"value": bpcer500, "threshold": bpcer500thres},
+        "BPCER1000": {"value": bpcer1000, "threshold": bpcer1000thres},
+        "BPCER10000": {"value": bpcer10000, "threshold": bpcer10000thres},
+    }
+
     json.dump(metrics_and_info, json_file, cls=NpEncoder)
 
-# store plots?
-# cm_fig
-# det_plot
+    # save plots
+    cm_fig.savefig(f"exps/{arch}_{exp_id}/figs/cm_plot.png")
+    det_plot.savefig(f"exps/{arch}_{exp_id}/figs/det_plot.png")

@@ -5,6 +5,7 @@ notebooks/*.json
 notebooks/models
 notebooks/aikit
 notebooks/densenet121_models
+notebooks/exps
 notebooks/__pycache__
 tflow/keras-yolo3/logs/*
 tflow/keras-yolo3/model_data/*
