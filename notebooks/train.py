@@ -142,7 +142,7 @@ db_key = args.dataset
 exp_id = datetime.now().strftime('%Y%m%d_%H%M%S%f')
 os.makedirs(f'exps/{arch}_{exp_id}/models')
 
-_classes = ("attack", "bona fide") if not multiclass else ("bona fide", "printed", "screen")
+_classes = ("attack", "bona fide") if not multiclass else ("bona fide", "printed", "screen", "synthetic")
 _bf_index = _classes.index("bona fide")
 
 if periocular:

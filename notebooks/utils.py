@@ -121,7 +121,7 @@ def load_dataset(
     
     buffer_size = 10101101
     db_dir = db_dict.get(db_key)
-    _classes = ('attack', 'bonafide') if not multiclass else ('bonafide', 'print', 'screen')
+    _classes = ('attack', 'bonafide') if not multiclass else ('bonafide', 'print', 'screen', 'synthetic')
     _bf_index = _classes.index('bonafide')
     imlist = [*list_images(db_dir)]
     
